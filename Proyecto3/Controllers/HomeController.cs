@@ -21,12 +21,15 @@ namespace Proyecto3.Controllers
 
             try
             {
+
                 file.SaveAs(Server.MapPath("~/Uploads/" + archivo));
+
+
             }
             catch (Exception e)
             {
-               
-            }           
+
+            }
         }
     }
 }
