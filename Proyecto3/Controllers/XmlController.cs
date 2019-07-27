@@ -6,6 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Xml;
 using HtmlAgilityPack;
+using Newtonsoft.Json;
 
 namespace Proyecto3.Controllers
 {
@@ -32,8 +33,14 @@ namespace Proyecto3.Controllers
 
             doc.Save(xw);
             string result = xml.ToString();
-            System.IO.File.WriteAllText(Server.MapPath("~/Uploads/data.xml"),result);
+           // System.IO.File.WriteAllText(Server.MapPath("~/Uploads/data.xml"),result);
 
+            //Json
+            XmlDocument json = new XmlDocument();
+            json.LoadXml(result);
+
+            string jsonText = JsonConvert.SerializeXmlNode(json);
+            System.IO.File.WriteAllText(Server.MapPath("~/Uploads/data.json"), jsonText);
         }
 
        
