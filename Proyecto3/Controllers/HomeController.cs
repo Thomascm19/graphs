@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Web;
 using System.Web.Mvc;
 
 namespace Proyecto3.Controllers
@@ -15,20 +12,29 @@ namespace Proyecto3.Controllers
         }
 
         [HttpPost]
-        public void Subir(HttpPostedFileBase file)
+        public ActionResult Subir(HttpPostedFileBase file)
         {
-            string archivo = (file.FileName).ToLower();
 
-            try
+            if (file != null)
             {
+                string fileName = (file.FileName).ToLower();
 
-                file.SaveAs(Server.MapPath("~/Uploads/" + archivo));
-
+                try
+                {
+                    file.SaveAs(Server.MapPath("~/Uploads/" + fileName));
+                    return RedirectToAction("Transformation", "Xml");
+                }
+                catch
+                {
+                    ViewBag.UploadError = "Error al cargar el archivo";
+                    return View("Index");
+                }
 
             }
-            catch (Exception e)
+            else
             {
-
+                ViewBag.UploadError = "Error al cargar el archivo";
+                return View("Index");
             }
         }
     }
