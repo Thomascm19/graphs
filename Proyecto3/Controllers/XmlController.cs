@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml;
 using HtmlAgilityPack;
 
 namespace Proyecto3.Controllers
@@ -15,17 +17,23 @@ namespace Proyecto3.Controllers
             return View();
         }
 
-        public string Xml()
+        public void Xml()
         {
-
             var path = Server.MapPath("~/Uploads/data.html");
 
             var doc = new HtmlDocument();
-            doc.Load(path);
+            doc.Load(path);            
 
-            var node = doc.DocumentNode.SelectSingleNode("//body");
+            doc.OptionOutputAsXml = true;
 
-            return node.OuterHtml;
+            StringWriter xml = new StringWriter();
+
+            XmlTextWriter xw = new XmlTextWriter(xml);
+
+            doc.Save(xw);
+            string result = xml.ToString();
+            System.IO.File.WriteAllText(Server.MapPath("~/Uploads/data.xml"),result);
+
         }
 
        
