@@ -4,25 +4,36 @@
 }
 
 
-<div class="row justify-content-md-center">
+<div class="row justify-content-md-center mt-4">
     <h1>Bienvenido</h1>
 </div>
+<hr />
 <div class="row">
-    <h3>Realice la carga de su archivo</h3>
+    <div class="col-md-6 offset-md-4">
+        <h3>Realice la carga de su archivo</h3>
+    </div>
+
+    <div class="row">
+        <hr />
+        <div class="alert alert-primary col-md-12 offset-md-11" role="alert">
+            Verifique que la extencion del archivo sea la correcta
+        </div>
+    </div>
 </div>
-
-@using (Html.BeginForm("Transformation", "Xml", FormMethod.Post, new { enctype = "multipart/form-data" }))
+@using (Html.BeginForm("Subir", "Home", FormMethod.Post, new { enctype = "multipart/form-data", @class = "login-form", @name = "form" }))
 {
+    <div class="col-md-7 offset-md-5">
+        <div class="custom-file col col-lg-4">
+            <input type="file" name="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+            <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+        </div>
+        <div class="col-5">
+            <button class="btn btn-success col-md-9 mt-2" type="submit">Subir archivo</button>
+        </div>
+    </div>
 
-        <div class="col-md-auto">
-            <div class="custom-file col col-lg-2">
-                <input type="file" name="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
-                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
-            </div>
-            <div>
-                <button class="btn btn-success col-md-auto mt-2" type="submit">Subir archivo</button>
-            </div>
-        </div>    
-
+    if (ViewBag.UploadError != null)
+    {
+        <div class="alert alert-danger mt-5">@ViewBag.UploadError</div>
+    }
 }
-

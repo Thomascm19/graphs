@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.IO;
 using System.Web.Mvc;
+using System.Xml;
 using HtmlAgilityPack;
+using Newtonsoft.Json;
 
 namespace Proyecto3.Controllers
 {
@@ -15,17 +14,29 @@ namespace Proyecto3.Controllers
             return View();
         }
 
-        public string Xml()
+        public ActionResult Xml()
         {
-
             var path = Server.MapPath("~/Uploads/data.html");
 
             var doc = new HtmlDocument();
-            doc.Load(path);
+            doc.Load(path);             
 
-            var node = doc.DocumentNode.SelectSingleNode("//body");
+            doc.OptionOutputAsXml = true;
 
-            return node.OuterHtml;
+            StringWriter xml = new StringWriter();
+
+            XmlTextWriter xw = new XmlTextWriter(xml);
+            doc.Save(xw);
+            string result = xml.ToString();
+            //System.IO.File.WriteAllText(Server.MapPath("~/Uploads/data.xml"),result);
+
+            //Json
+            XmlDocument json = new XmlDocument();
+            json.LoadXml(result);
+
+            string jsonText = JsonConvert.SerializeXmlNode(json);
+            System.IO.File.WriteAllText(Server.MapPath("~/Uploads/data.json"), jsonText);
+            return RedirectToAction("Graph", "Graph");
         }
 
        
