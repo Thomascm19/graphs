@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Web;
+﻿using System.IO;
 using System.Web.Mvc;
 using System.Xml;
 using HtmlAgilityPack;
@@ -18,22 +14,21 @@ namespace Proyecto3.Controllers
             return View();
         }
 
-        public void Xml()
+        public ActionResult Xml()
         {
             var path = Server.MapPath("~/Uploads/data.html");
 
             var doc = new HtmlDocument();
-            doc.Load(path);            
+            doc.Load(path);             
 
             doc.OptionOutputAsXml = true;
 
             StringWriter xml = new StringWriter();
 
             XmlTextWriter xw = new XmlTextWriter(xml);
-
             doc.Save(xw);
             string result = xml.ToString();
-           // System.IO.File.WriteAllText(Server.MapPath("~/Uploads/data.xml"),result);
+            //System.IO.File.WriteAllText(Server.MapPath("~/Uploads/data.xml"),result);
 
             //Json
             XmlDocument json = new XmlDocument();
@@ -41,6 +36,7 @@ namespace Proyecto3.Controllers
 
             string jsonText = JsonConvert.SerializeXmlNode(json);
             System.IO.File.WriteAllText(Server.MapPath("~/Uploads/data.json"), jsonText);
+            return RedirectToAction("Graph", "Graph");
         }
 
        
